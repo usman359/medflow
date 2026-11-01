@@ -104,8 +104,22 @@ type Db = ReturnType<typeof createDb>
 // otherwise hot reload keeps serving the previous pool.
 const globalForDb = globalThis as unknown as { __medflowDbPoolV2?: Db }
 
-export const db: Db = globalForDb.__medflowDbPoolV2 ?? createDb()
-if (process.env.NODE_ENV !== "production") globalForDb.__medflowDbPoolV2 = db
+function getDb(): Db {
+  if (!globalForDb.__medflowDbPoolV2) {
+    globalForDb.__medflowDbPoolV2 = createDb()
+  }
+  return globalForDb.__medflowDbPoolV2
+}
+
+// Lazy: Next.js evaluates route modules during `next build` (page-data collection).
+// Creating the pool at import time would fail when DATABASE_URL is unset in CI/Vercel.
+export const db: Db = new Proxy({} as Db, {
+  get(_target, prop, receiver) {
+    const instance = getDb()
+    const value = Reflect.get(instance as object, prop, receiver)
+    return typeof value === "function" ? (value as (...args: unknown[]) => unknown).bind(instance) : value
+  },
+})
 
 export type Transaction = Parameters<Parameters<Db["transaction"]>[0]>[0]
 export type DbOrTx = Db | Transaction
