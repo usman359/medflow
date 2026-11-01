@@ -114,9 +114,9 @@ function getDb(): Db {
 // Lazy: Next.js evaluates route modules during `next build` (page-data collection).
 // Creating the pool at import time would fail when DATABASE_URL is unset in CI/Vercel.
 export const db: Db = new Proxy({} as Db, {
-  get(_target, prop, receiver) {
+  get(_target, prop) {
     const instance = getDb()
-    const value = Reflect.get(instance as object, prop, receiver)
+    const value = Reflect.get(instance as object, prop, instance)
     return typeof value === "function" ? (value as (...args: unknown[]) => unknown).bind(instance) : value
   },
 })
