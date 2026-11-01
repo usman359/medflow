@@ -1,0 +1,186 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * State variants used by the shadcn "radix-nova" components (data-open:,
+ * data-active:, data-horizontal: …). Radix exposes state as data-state /
+ * data-orientation, so each variant matches that form and the bare-attribute
+ * form. Without these, popover/dialog animations, active tabs and checked
+ * states silently don't apply.
+ */
+@custom-variant data-open (&:where([data-state="open"], [data-open]:not([data-open="false"])));
+@custom-variant data-closed (&:where([data-state="closed"], [data-closed]:not([data-closed="false"])));
+@custom-variant data-checked (&:where([data-state="checked"], [data-checked]:not([data-checked="false"])));
+@custom-variant data-unchecked (&:where([data-state="unchecked"], [data-unchecked]:not([data-unchecked="false"])));
+@custom-variant data-active (&:where([data-state="active"], [data-active]:not([data-active="false"])));
+@custom-variant data-selected (&:where([data-selected]:not([data-selected="false"])));
+@custom-variant data-disabled (&:where([data-disabled]:not([data-disabled="false"])));
+@custom-variant data-horizontal (&:where([data-orientation="horizontal"]));
+@custom-variant data-vertical (&:where([data-orientation="vertical"]));
+
+/*
+ * MedFlow palette — calm, warm and accessible.
+ * warm white surfaces · deep teal primary · muted mint support · small coral accent
+ */
+:root {
+  --radius: 0.875rem;
+
+  --background: #fbf9f6;
+  --foreground: #1d2b2c;
+  --card: #ffffff;
+  --card-foreground: #1d2b2c;
+  --popover: #ffffff;
+  --popover-foreground: #1d2b2c;
+
+  --primary: #0f5257;
+  --primary-foreground: #f7fbfa;
+  --secondary: #dcefe7;
+  --secondary-foreground: #0d4448;
+  --muted: #f2eee8;
+  --muted-foreground: #5b6a6b;
+  --accent: #e8f4ef;
+  --accent-foreground: #0d4448;
+  --destructive: #b4372a;
+  --destructive-foreground: #ffffff;
+
+  --border: #e6e0d7;
+  --input: #ddd6cb;
+  --ring: #2a7f84;
+
+  /* Brand extras */
+  --teal-50: #eef7f6;
+  --teal-100: #d4ebe9;
+  --teal-700: #0f5257;
+  --teal-800: #0b3f43;
+  --teal-900: #082e31;
+  --mint: #dcefe7;
+  --mint-strong: #b9dfcf;
+  --coral: #e9785a;
+  --coral-soft: #fde8e1;
+  --coral-ink: #9a3c22;
+  --sand: #f2eee8;
+
+  /* Status colors (paired with labels, never color-only) */
+  --status-requested: #8a5a00;
+  --status-requested-bg: #fdf1d6;
+  --status-confirmed: #0f5257;
+  --status-confirmed-bg: #d9eeeb;
+  --status-checked-in: #3b4fa0;
+  --status-checked-in-bg: #e2e7fa;
+  --status-completed: #2e6b3a;
+  --status-completed-bg: #dcefdc;
+  --status-cancelled: #545454;
+  --status-cancelled-bg: #ecebe8;
+  --status-no-show: #9a3c22;
+  --status-no-show-bg: #fde8e1;
+
+  /* Charts */
+  --chart-1: #0f5257;
+  --chart-2: #e9785a;
+  --chart-3: #6fb8a0;
+  --chart-4: #3b4fa0;
+  --chart-5: #c9a227;
+
+  --sidebar: #f6f3ee;
+  --sidebar-foreground: #1d2b2c;
+  --sidebar-primary: #0f5257;
+  --sidebar-primary-foreground: #f7fbfa;
+  --sidebar-accent: #e8f4ef;
+  --sidebar-accent-foreground: #0d4448;
+  --sidebar-border: #e6e0d7;
+  --sidebar-ring: #2a7f84;
+}
+
+@theme inline {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-teal-50: var(--teal-50);
+  --color-teal-100: var(--teal-100);
+  --color-teal-700: var(--teal-700);
+  --color-teal-800: var(--teal-800);
+  --color-teal-900: var(--teal-900);
+  --color-mint: var(--mint);
+  --color-mint-strong: var(--mint-strong);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-coral-ink: var(--coral-ink);
+  --color-sand: var(--sand);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight text-teal-900;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .eyebrow {
+    @apply text-sm font-semibold tracking-wide text-coral-ink uppercase;
+  }
+}
